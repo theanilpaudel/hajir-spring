@@ -1,0 +1,40 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/resources/env.properties
+!**/src/main/resources/client_secret_569046147684-mi7cilm08635aum55kdf60isj1lotlb1.apps.googleusercontent.com.json
+!**/src/main/resources/hajir-10448-714a576aaeab.json
+cloud.env
+!**/tokens/StoredCredential
+/src/main/resources/
+/tokens/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
