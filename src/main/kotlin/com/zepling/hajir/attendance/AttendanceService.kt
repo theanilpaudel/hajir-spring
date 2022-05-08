@@ -56,4 +56,10 @@ class AttendanceService {
     }.also {
         attendanceRepo.save(it)
     }
+
+    fun getLatestAttendance(principal: Principal,employeeId: String):Attendance?{
+        val employee = employeeRepo.findById(employeeId).get()
+        val lastAttendanceOpt = employee.id?.let { attendanceRepo.findFirstByEmployee_Id_OrderByCheckInDesc(it) }
+        return lastAttendanceOpt?.get()
+    }
 }
