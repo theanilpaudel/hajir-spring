@@ -51,6 +51,7 @@ class AttendanceService {
     }
 
     fun checkOut(attendance: Attendance, remarks: String):Attendance = attendance.apply {
+        checkIn = attendance.checkIn
         checkOut = OffsetDateTime.now(ZoneId.of("Asia/Kathmandu"))
         this.remarks = remarks
     }.also {
@@ -60,6 +61,7 @@ class AttendanceService {
     fun getLatestAttendance(principal: Principal,employeeId: String):Attendance?{
         val employee = employeeRepo.findById(employeeId).get()
         val lastAttendanceOpt = employee.id?.let { attendanceRepo.findFirstByEmployee_Id_OrderByCheckInDesc(it) }
+
         return lastAttendanceOpt?.get()
     }
 }

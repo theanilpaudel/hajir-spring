@@ -18,4 +18,9 @@ class EmployeeService {
         employee.boss = boss
         employeeRepo.save(employee)
     }
+
+    fun getAllEmployees(principal: Principal): List<Employee> {
+        val boss = employerRepo.findById(principal.name).get()
+        return employeeRepo.findAllByBossId(boss.id.toString()).get()
+    }
 }
