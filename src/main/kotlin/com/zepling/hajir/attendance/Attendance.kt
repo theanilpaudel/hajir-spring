@@ -1,7 +1,7 @@
 package com.zepling.hajir.attendance
 
-import com.zepling.hajir.boss.Boss
 import com.zepling.hajir.employee.Employee
+import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.GenericGenerator
 import java.time.OffsetDateTime
 import javax.persistence.*
@@ -15,7 +15,9 @@ open class Attendance {
     @Column(name = "id", nullable = false)
     open var id: String? = null
 
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     open var checkIn: OffsetDateTime? = null
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     open var checkOut: OffsetDateTime? = null
     open var remarks: String? = null
     open val hours: Int

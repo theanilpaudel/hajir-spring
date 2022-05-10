@@ -51,21 +51,14 @@ class AttendanceService {
         attendanceRepo.save(it)
     }
 
-    /*fun checkOut(attendance: Attendance, remarks: String):Attendance = attendance.apply {
+    fun checkOut(attendance: Attendance, remarks: String):Attendance = attendance.apply {
         this.checkIn = attendance.checkIn
         this.checkOut = OffsetDateTime.now(ZoneId.of("Asia/Kathmandu"))
         this.remarks = remarks
     }.also {
         attendanceRepo.save(it)
-    }*/
-
-    fun checkOut(attendance: Attendance, remarks: String):Attendance{
-        attendance.checkIn = attendance.checkIn
-        attendance.checkOut = OffsetDateTime.now(ZoneId.of("Asia/Kathmandu"))
-        attendance.remarks = remarks
-        attendanceRepo.save(attendance)
-        return attendance
     }
+
 
     fun getLatestAttendance(principal: Principal,employeeId: String):Attendance?{
         val employee = employeeRepo.findById(employeeId).get()
