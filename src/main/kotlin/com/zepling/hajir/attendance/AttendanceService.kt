@@ -44,7 +44,7 @@ class AttendanceService {
     }
 
     fun checkIn(employee: Employee,remarks: String):Attendance = Attendance().apply {
-        checkIn = OffsetDateTime.now(ZoneId.of("Asia/Kathmandu"))
+        this.checkIn = OffsetDateTime.now(ZoneId.of("Asia/Kathmandu"))
         this.remarks = remarks
         this.employee = employee
     }.also {
@@ -52,8 +52,8 @@ class AttendanceService {
     }
 
     fun checkOut(attendance: Attendance, remarks: String):Attendance = attendance.apply {
-        checkIn = attendance.checkIn
-        checkOut = OffsetDateTime.now(ZoneId.of("Asia/Kathmandu"))
+        this.checkIn = attendance.checkIn
+        this.checkOut = OffsetDateTime.now(ZoneId.of("Asia/Kathmandu"))
         this.remarks = remarks
     }.also {
         attendanceRepo.save(it)
