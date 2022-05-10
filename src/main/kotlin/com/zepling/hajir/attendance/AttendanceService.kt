@@ -25,15 +25,16 @@ class AttendanceService {
 
         if (lastAttendanceOpt?.isPresent == true) {
             //check checkOut to see if it's a new checkIn
-            lastAttendanceOpt.get().also {
-                if (it.checkOut == null) {
+            with(lastAttendanceOpt.get()){
+                attendance = if (checkOut == null) {
                     //Employee hasn't checked out :: CHECKOUT
-                    attendance = checkOut(it,remarks)
+                    checkOut(this,remarks)
                 } else {
                     //Employee has checked out :: CHECKIN
-                    attendance = checkIn(employee,remarks)
+                    checkIn(employee,remarks)
                 }
             }
+
             println(lastAttendanceOpt.get().checkIn)
         } else {
             //CHECKIN
