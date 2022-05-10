@@ -24,7 +24,7 @@ class AttendanceService {
         var attendance: Attendance?
 
         if (lastAttendanceOpt?.isPresent == true) {
-            //check checkOut to see if its a new checkIn
+            //check checkOut to see if it's a new checkIn
             lastAttendanceOpt.get().also {
                 if (it.checkOut == null) {
                     //Employee hasn't checked out :: CHECKOUT
