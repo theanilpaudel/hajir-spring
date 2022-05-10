@@ -60,6 +60,7 @@ class AttendanceService {
     }*/
 
     fun checkOut(attendance: Attendance, remarks: String):Attendance{
+        attendance.checkIn = attendance.checkIn
         attendance.checkOut = OffsetDateTime.now(ZoneId.of("Asia/Kathmandu"))
         attendance.remarks = remarks
         attendanceRepo.save(attendance)
