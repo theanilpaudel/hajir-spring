@@ -22,8 +22,10 @@ class EmployeeController {
     }
 
     @GetMapping("/getAll")
-    fun getAllEmployees(principal: Principal):ResponseEntity<List<Employee>>{
+    fun getAllEmployees(principal: Principal): ResponseEntity<HashMap<String,List<Employee>>> {
         val employees = employeeService.getAllEmployees(principal)
-        return ResponseEntity(employees,HttpStatus.OK)
+        val map = HashMap<String,List<Employee>>()
+        map["employees"] = employees
+        return ResponseEntity(map,HttpStatus.OK)
     }
 }
