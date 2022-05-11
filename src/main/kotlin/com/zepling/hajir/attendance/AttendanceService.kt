@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service
 import java.security.Principal
 import java.time.OffsetDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 
 @Service
 class AttendanceService {
@@ -52,7 +53,7 @@ class AttendanceService {
     }
 
     fun checkOut(attendance: Attendance, remarks: String):Attendance = attendance.apply {
-        this.checkIn = attendance.checkIn
+        this.checkIn = OffsetDateTime.of(attendance.checkIn?.toLocalDateTime(),ZoneOffset.of("+05:45"))
         this.checkOut = OffsetDateTime.now(ZoneId.of("Asia/Kathmandu"))
         this.remarks = remarks
     }.also {
