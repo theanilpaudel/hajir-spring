@@ -3,6 +3,7 @@ package com.zepling.hajir.attendance
 import com.zepling.hajir.employee.Employee
 import com.zepling.hajir.employee.EmployeeRepo
 import com.zepling.hajir.utils.Response
+import com.zepling.hajir.utils.convertToNepali
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.security.Principal
@@ -53,7 +54,7 @@ class AttendanceService {
     }
 
     fun checkOut(attendance: Attendance, remarks: String):Attendance = attendance.apply {
-        this.checkIn = OffsetDateTime.of(attendance.checkIn?.toLocalDateTime(),ZoneOffset.of("+05:45"))
+        this.checkIn = attendance.checkIn?.convertToNepali()
         this.checkOut = OffsetDateTime.now(ZoneId.of("Asia/Kathmandu"))
         this.remarks = remarks
     }.also {
@@ -64,7 +65,10 @@ class AttendanceService {
     fun getLatestAttendance(principal: Principal,employeeId: String):Attendance?{
         val employee = employeeRepo.findById(employeeId).get()
         val lastAttendanceOpt = employee.id?.let { attendanceRepo.findFirstByEmployee_Id_OrderByCheckInDesc(it) }
-
+        lastAttendanceOpt?.get().apply {
+            this?.checkIn?.convertToNepali()
+            this?.checkOut?.convertToNepali()
+        }
         return lastAttendanceOpt?.get()
     }
 }
