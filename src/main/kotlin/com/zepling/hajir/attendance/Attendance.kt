@@ -19,7 +19,8 @@ open class Attendance {
     open var checkIn: OffsetDateTime? = null
     @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     open var checkOut: OffsetDateTime? = null
-    open var remarks: String? = null
+    open var remarksCheckIn: String? = null
+    open var remarksCheckOut: String? = null
     open val hours: Int
         get() {
             return if (checkIn != null && checkOut != null) {

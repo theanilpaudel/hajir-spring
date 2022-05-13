@@ -5,4 +5,6 @@ import java.util.Optional
 
 interface AttendanceRepo:JpaRepository<Attendance,String> {
     fun findFirstByEmployee_Id_OrderByCheckInDesc(employeeId:String):Optional<Attendance>
+    fun findAllByEmployee_Id_OrderByCheckInDesc(employeeId:String):Optional<List<Attendance>>
+    fun findAllByEmployee_Boss_IdOrderByCheckInDesc(bossId:String):Optional<List<Attendance>>
 }
