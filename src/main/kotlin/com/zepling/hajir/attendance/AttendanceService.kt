@@ -93,7 +93,7 @@ class AttendanceService {
         val listOpt = boss.id?.let { attendanceRepo.findAllByEmployee_Boss_IdOrderByCheckInDesc(it) }
         return if(listOpt?.isPresent == true){
             val list = listOpt.get().filter {
-                it.checkIn != null
+                (it.checkIn != null && it.checkOut == null)
             }
             Response.Success(list)
         }else{
