@@ -17,9 +17,11 @@ class EmployeeController {
     lateinit var employeeService: EmployeeService
 
     @PostMapping("/create")
-    fun createEmployee(principal: Principal,@RequestBody employee: Employee):ResponseEntity<String>{
-        employeeService.createEmployee(principal,employee)
-        return ResponseEntity("Success", HttpStatus.OK)
+    fun createEmployee(principal: Principal,@RequestBody employee: Employee):ResponseEntity<HashMap<String,Employee>>{
+        val employeee = employeeService.createEmployee(principal,employee)
+        val map = HashMap<String,Employee>()
+        map["employee"] = employeee
+        return ResponseEntity(map, HttpStatus.OK)
     }
 
     @GetMapping("/getAll")

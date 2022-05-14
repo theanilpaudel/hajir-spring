@@ -12,11 +12,12 @@ class EmployeeService {
     @Autowired
     lateinit var employerRepo: BossRepo
 
-    fun createEmployee(principal: Principal, employee: Employee){
+    fun createEmployee(principal: Principal, employee: Employee):Employee{
         println("PRINCIPAL ${principal.name}")
         val boss = employerRepo.findById(principal.name).get()
         employee.boss = boss
         employeeRepo.save(employee)
+        return employee
     }
 
     fun getAllEmployees(principal: Principal): List<Employee> {
