@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
@@ -16,7 +17,7 @@ class EmployeeController {
     lateinit var employeeService: EmployeeService
 
     @PostMapping("/create")
-    fun createEmployee(principal: Principal,employee: Employee):ResponseEntity<String>{
+    fun createEmployee(principal: Principal,@RequestBody employee: Employee):ResponseEntity<String>{
         employeeService.createEmployee(principal,employee)
         return ResponseEntity("Success", HttpStatus.OK)
     }
