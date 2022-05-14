@@ -67,15 +67,23 @@ class AttendanceService {
     }
 
 
-    fun getLatestAttendance(principal: Principal,employeeId: String):Attendance?{
+    fun getLatestAttendance(principal: Principal,employeeId: String):Response<Attendance>{
         val employee = employeeRepo.findById(employeeId).get()
         val lastAttendanceOpt = employee.id?.let { attendanceRepo.findFirstByEmployee_Id_OrderByCheckInDesc(it) }
-        //todo no value present
-        lastAttendanceOpt?.get().apply {
-            this?.checkIn?.convertToNepali()
-            this?.checkOut?.convertToNepali()
+        return if(lastAttendanceOpt?.isPresent == true){
+            lastAttendanceOpt.get().apply {
+                this.checkIn?.convertToNepali()
+                this.checkOut?.convertToNepali()
+            }
+            Response.Success(lastAttendanceOpt.get())
+        }else{
+            val attendance = Attendance().apply {
+                this.employee = employee
+            }
+            Response.Success(attendance)
         }
-        return lastAttendanceOpt?.get()
+
+
     }
 
     fun getAllAttendanceOfAnEmployee(principal: Principal,employeeId: String):Response<List<Attendance>>{

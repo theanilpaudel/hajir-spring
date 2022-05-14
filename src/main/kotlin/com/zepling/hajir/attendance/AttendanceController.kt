@@ -29,11 +29,14 @@ class AttendanceController {
 
     @GetMapping("/getLatest")
     fun getLatestAttendance(principal: Principal, employeeId: String): ResponseEntity<Attendance> {
-        val attendance = attendanceService.getLatestAttendance(principal, employeeId)
-        return if (attendance == null) {
-            ResponseEntity(attendance, HttpStatus.NOT_FOUND)
-        } else {
-            ResponseEntity(attendance, HttpStatus.OK)
+        return when (val attendanceResponse = attendanceService.getLatestAttendance(principal, employeeId)) {
+            is Response.Success->{
+                ResponseEntity(attendanceResponse.t, HttpStatus.OK)
+            }
+            is Response.Error->{
+                ResponseEntity(Attendance(), HttpStatus.NOT_FOUND)
+            }
+            
         }
     }
 
