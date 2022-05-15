@@ -2,9 +2,11 @@ package com.zepling.hajir.boss
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserRecord
+import com.zepling.hajir.utils.GoogleSheetsUtil
 import com.zepling.hajir.utils.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.security.Principal
 
 @Service
 class BossService {
@@ -31,5 +33,20 @@ class BossService {
             }
         }
 
+    }
+
+    fun createSpreadSheet(principal: Principal):Response<String>{
+        val boss = bossRepo.findById(principal.name).get()
+        with(boss){
+            val spreadSheetId = GoogleSheetsUtil.createSpreadSheet(boss)
+
+            return if (spreadSheetId.isNotEmpty()){
+                boss.spreadSheetId = spreadSheetId
+                bossRepo.save(boss)
+                Response.Success("Success")
+            }else{
+                Response.Error("Failed")
+            }
+        }
     }
 }

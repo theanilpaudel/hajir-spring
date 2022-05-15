@@ -31,4 +31,10 @@ class EmployeeController {
         map["employees"] = employees
         return ResponseEntity(map,HttpStatus.OK)
     }
+
+    @PostMapping("/createSheet")
+    fun createSheet(principal: Principal,employeeId:String):ResponseEntity<String>{
+        employeeService.createSheet(employeeId)
+        return ResponseEntity("Ok", HttpStatus.OK)
+    }
 }

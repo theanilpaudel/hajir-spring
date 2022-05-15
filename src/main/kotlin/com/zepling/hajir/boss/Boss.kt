@@ -1,5 +1,6 @@
 package com.zepling.hajir.boss
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -17,5 +18,6 @@ open class Boss {
     open var email:String?=null
     open var phone: String?=null
     open var enabled:Boolean?=null
-
+    @JsonIgnore
+    open var spreadSheetId:String?=null
 }

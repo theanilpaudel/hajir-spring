@@ -1,6 +1,6 @@
 package com.zepling.hajir.attendance
 
-import com.zepling.hajir.employee.Employee
+import com.zepling.hajir.utils.GoogleSheetsUtil
 import com.zepling.hajir.utils.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -29,14 +29,19 @@ class AttendanceController {
 
     @GetMapping("/getLatest")
     fun getLatestAttendance(principal: Principal, employeeId: String): ResponseEntity<Attendance> {
+
+//        GoogleAuthorizeUtil.printValues()
+//        GoogleAuthorizeUtil.createSpreadSheet()
+
         return when (val attendanceResponse = attendanceService.getLatestAttendance(principal, employeeId)) {
             is Response.Success->{
+
                 ResponseEntity(attendanceResponse.t, HttpStatus.OK)
             }
             is Response.Error->{
                 ResponseEntity(Attendance(), HttpStatus.NOT_FOUND)
             }
-            
+
         }
     }
 

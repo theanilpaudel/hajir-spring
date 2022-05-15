@@ -1,6 +1,7 @@
 package com.zepling.hajir.employee
 
 import com.zepling.hajir.boss.BossRepo
+import com.zepling.hajir.utils.GoogleSheetsUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.security.Principal
@@ -23,5 +24,10 @@ class EmployeeService {
     fun getAllEmployees(principal: Principal): List<Employee> {
         val boss = employerRepo.findById(principal.name).get()
         return employeeRepo.findAllByBossId(boss.id.toString()).get()
+    }
+
+    fun createSheet(employeeId:String){
+        val employee = employeeRepo.findById(employeeId).get()
+        GoogleSheetsUtil.createSheet(employee)
     }
 }

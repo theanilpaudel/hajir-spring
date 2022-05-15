@@ -1,5 +1,6 @@
 package com.zepling.hajir.employee
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zepling.hajir.boss.Boss
 import org.hibernate.annotations.GenericGenerator
 import javax.persistence.*
@@ -17,6 +18,8 @@ open class Employee {
     open var phone:String?=null
     open var address:String?=null
     open var bloodGrp:String?=null
+    open var range:Long?=2
+
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="boss_id", nullable = false)

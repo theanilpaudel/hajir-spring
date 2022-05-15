@@ -34,4 +34,19 @@ class BossController {
 
 
     }
+
+    @PostMapping("/createSpreadSheet")
+    fun createSpreadSheet(principal: Principal): ResponseEntity<String> {
+
+        return when (bossService.createSpreadSheet(principal)) {
+            is Response.Success -> {
+                ResponseEntity("OK", HttpStatus.OK)
+            }
+            is Response.Error -> {
+                ResponseEntity("Error", HttpStatus.NOT_FOUND)
+            }
+        }
+
+
+    }
 }
