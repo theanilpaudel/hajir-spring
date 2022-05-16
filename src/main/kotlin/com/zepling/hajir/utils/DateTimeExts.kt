@@ -5,6 +5,7 @@ import java.time.Duration
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -63,13 +64,14 @@ fun String.beautifyDateWithTimeZone():String?{
     try {
         //2022-05-10T20:32:39.381+05:45
         val dateParse = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH)
-        val odt = OffsetDateTime.parse(this, dateParse)
+        val odt = ZonedDateTime.parse(this, dateParse).withZoneSameInstant(ZoneId.of(Keys.ZONE_ID))
 
         val newOdt = OffsetDateTime.of(odt.toLocalDateTime(), ZoneOffset.of("+05:45"))
         val dateTimeFormat = DateTimeFormatter.ofPattern("MMM, yyyy, HH:mm:ss", Locale.ENGLISH)
 
+        val d = OffsetDateTime.of(newOdt.toLocalDateTime(),ZoneOffset.of("+05:45")).atZoneSameInstant(ZoneId.of(Keys.ZONE_ID)).format(dateTimeFormat)
 
-        return OffsetDateTime.of(newOdt.toLocalDateTime(), ZoneOffset.of("+05:45")).format(dateTimeFormat)
+        return d
     }catch (e:Exception){
         e.printStackTrace()
         return null

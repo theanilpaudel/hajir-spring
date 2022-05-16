@@ -130,7 +130,8 @@ object GoogleSheetsUtil {
     fun writeAttendanceToSpreadSheet(attendance: Attendance):Boolean {
         val spreadSheetId = attendance.employee.boss.spreadSheetId
         val range = "${attendance.employee.name}!A2"
-        println("CHECK IN SpreadSheet -> ${attendance.checkIn.toString().beautifyDateWithTimeZone()}")
+        println("CHECK IN SpreadSheet -> ${attendance.checkIn.toString()}")
+        println("CHECK IN beautified SpreadSheet -> ${attendance.checkIn.toString().beautifyDateWithTimeZone()}")
         val values: List<List<String>> = listOf(
             listOf(
                 attendance.id.toString(),
