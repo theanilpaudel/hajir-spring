@@ -3,15 +3,18 @@ package com.zepling.hajir.utils
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
-import com.zepling.hajir.resourceLoader
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.Resource
+import org.springframework.core.io.ResourceLoader
 import java.io.FileInputStream
 import java.io.IOException
 
 @Configuration
 class BeanConfiguration{
+    @Autowired
+    lateinit var resourceLoader: ResourceLoader
     @Bean
     fun initializeFirebase(){
         try {

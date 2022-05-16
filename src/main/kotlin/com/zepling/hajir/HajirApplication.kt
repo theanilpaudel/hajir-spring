@@ -21,8 +21,7 @@ import java.io.IOException
 @EnableEmailTools
 class HajirApplication
 
-@Autowired
-lateinit var resourceLoader: ResourceLoader
+
 
 fun main(args: Array<String>) {
     runApplication<HajirApplication>(*args)
