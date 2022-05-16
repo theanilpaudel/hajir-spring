@@ -59,6 +59,22 @@ fun String.beautifyDate():String?{
     }
 }
 
+fun String.beautifyDateWithTimeZone():String?{
+    try {
+        //2022-05-10T20:32:39.381+05:45
+        val dateParse = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH)
+        val odt = OffsetDateTime.parse(this, dateParse)
+
+        val newOdt = OffsetDateTime.of(odt.toLocalDateTime(), ZoneOffset.of("+05:45"))
+        val dateTimeFormat = DateTimeFormatter.ofPattern("MMM, yyyy, HH:mm:ss", Locale.ENGLISH)
+
+
+        return OffsetDateTime.of(newOdt.toLocalDateTime(), ZoneOffset.of("+05:45")).format(dateTimeFormat)
+    }catch (e:Exception){
+        return null
+    }
+}
+
 fun String.getMonthAndYear():String{
     //2022-05-10T20:32:39.381+05:45
     val dateParse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH)

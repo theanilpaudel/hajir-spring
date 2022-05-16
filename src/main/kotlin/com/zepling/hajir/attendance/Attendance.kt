@@ -3,6 +3,7 @@ package com.zepling.hajir.attendance
 import com.zepling.hajir.employee.Employee
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.GenericGenerator
+import java.time.Duration
 import java.time.OffsetDateTime
 import javax.persistence.*
 
@@ -22,12 +23,13 @@ open class Attendance {
     open var remarksCheckIn: String? = null
     open var remarksCheckOut: String? = null
    
-    open val hours: Int
+    open val hours: String
         get() {
             return if (checkIn != null && checkOut != null) {
-                (checkOut!!.second.minus(checkIn!!.second))/(60*60)
+
+                String.format("%.3f",(Duration.between(checkIn,checkOut).seconds)/(60*60).toDouble())
             } else {
-                0
+                "0"
             }
 
         }

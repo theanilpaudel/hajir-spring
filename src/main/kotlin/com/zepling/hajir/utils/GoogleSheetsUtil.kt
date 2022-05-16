@@ -133,10 +133,11 @@ object GoogleSheetsUtil {
         val values: List<List<String>> = listOf(
             listOf(
                 attendance.id.toString(),
-                attendance.checkIn.toString().beautifyDate().toString(),
+                attendance.checkIn.toString().beautifyDateWithTimeZone().toString(),
                 if (attendance.remarksCheckIn.isNullOrBlank() || attendance.remarksCheckIn.isNullOrEmpty()) "N/A" else attendance.remarksCheckIn.toString(),
-                attendance.checkOut.toString().beautifyDate().toString(),
+                attendance.checkOut.toString().beautifyDateWithTimeZone().toString(),
                 if (attendance.remarksCheckOut.isNullOrBlank() || attendance.remarksCheckOut.isNullOrEmpty()) "N/A" else attendance.remarksCheckOut.toString(),
+                attendance.hours.toString()
             ) // Cell values
         )// Rows
 
