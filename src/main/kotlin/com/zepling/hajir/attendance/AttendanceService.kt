@@ -61,7 +61,7 @@ class AttendanceService {
     }
 
     fun checkOut(attendance: Attendance, remarks: String): Attendance = attendance.apply {
-        this.checkIn = attendance.checkIn?.convertToNepali()
+        this.checkIn = attendance.checkIn
         this.checkOut = OffsetDateTime.now(ZoneId.of(Keys.ZONE_ID))
         this.remarksCheckOut = remarks
     }.also {
