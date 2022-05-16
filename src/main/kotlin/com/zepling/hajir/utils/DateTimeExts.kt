@@ -46,13 +46,17 @@ fun String.getDurationInMinutes(): Long {
     return duration.toMinutes()
 }
 
-fun String.beautifyDate():String{
-    //2022-05-10T20:32:39.381+05:45
-    val dateParse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH)
-    val dateFormat = SimpleDateFormat("MMM d, yyyy, hh:mm a", Locale.ENGLISH)
+fun String.beautifyDate():String?{
+    try {
+        //2022-05-10T20:32:39.381+05:45
+        val dateParse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH)
+        val dateFormat = SimpleDateFormat("MMM d, yyyy, hh:mm a", Locale.ENGLISH)
 
-    val d = dateParse.parse(this)
-    return dateFormat.format(d)
+        val d = dateParse.parse(this)
+        return dateFormat.format(d)
+    }catch (e:Exception){
+        return null
+    }
 }
 
 fun String.getMonthAndYear():String{

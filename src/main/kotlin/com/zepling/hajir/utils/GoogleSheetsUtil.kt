@@ -133,9 +133,9 @@ object GoogleSheetsUtil {
         val values: List<List<String>> = listOf(
             listOf(
                 attendance.id.toString(),
-                attendance.checkIn.toString().beautifyDate(),
+                attendance.checkIn.toString().beautifyDate().toString(),
                 if (attendance.remarksCheckIn.isNullOrBlank() || attendance.remarksCheckIn.isNullOrEmpty()) "N/A" else attendance.remarksCheckIn.toString(),
-                attendance.checkOut.toString().beautifyDate(),
+                attendance.checkOut.toString().beautifyDate().toString(),
                 if (attendance.remarksCheckOut.isNullOrBlank() || attendance.remarksCheckOut.isNullOrEmpty()) "N/A" else attendance.remarksCheckOut.toString(),
             ) // Cell values
         )// Rows
