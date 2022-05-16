@@ -130,6 +130,7 @@ object GoogleSheetsUtil {
     fun writeAttendanceToSpreadSheet(attendance: Attendance):Boolean {
         val spreadSheetId = attendance.employee.boss.spreadSheetId
         val range = "${attendance.employee.name}!A2"
+        println("CHECK IN SpreadSheet -> ${attendance.checkIn.toString().beautifyDateWithTimeZone()}")
         val values: List<List<String>> = listOf(
             listOf(
                 attendance.id.toString(),
@@ -137,7 +138,7 @@ object GoogleSheetsUtil {
                 if (attendance.remarksCheckIn.isNullOrBlank() || attendance.remarksCheckIn.isNullOrEmpty()) "N/A" else attendance.remarksCheckIn.toString(),
                 attendance.checkOut.toString().beautifyDateWithTimeZone().toString(),
                 if (attendance.remarksCheckOut.isNullOrBlank() || attendance.remarksCheckOut.isNullOrEmpty()) "N/A" else attendance.remarksCheckOut.toString(),
-                attendance.hours.toString()
+                attendance.hours
             ) // Cell values
         )// Rows
 

@@ -71,6 +71,7 @@ fun String.beautifyDateWithTimeZone():String?{
 
         return OffsetDateTime.of(newOdt.toLocalDateTime(), ZoneOffset.of("+05:45")).format(dateTimeFormat)
     }catch (e:Exception){
+        e.printStackTrace()
         return null
     }
 }

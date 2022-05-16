@@ -92,13 +92,8 @@ class AttendanceService {
         val employee = employeeRepo.findById(employeeId).get()
         val listOpt = employee.id?.let { attendanceRepo.findAllByEmployee_Id_OrderByCheckInDesc(it) }
         return if (listOpt?.isPresent == true) {
-            val newList = listOpt.get().map {
-                it.checkIn?.convertToNepali()
-                it.checkOut?.convertToNepali()
-                it
-            }
 
-            Response.Success(newList)
+            Response.Success(listOpt.get())
         } else {
             Response.Error(Keys.EMPTY)
         }
