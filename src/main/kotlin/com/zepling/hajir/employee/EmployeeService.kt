@@ -17,7 +17,8 @@ class EmployeeService {
         println("PRINCIPAL ${principal.name}")
         val boss = employerRepo.findById(principal.name).get()
         employee.boss = boss
-        employeeRepo.save(employee)
+        val emp  = employeeRepo.save(employee)
+        createSheet(emp.id.toString())
         return employee
     }
 
