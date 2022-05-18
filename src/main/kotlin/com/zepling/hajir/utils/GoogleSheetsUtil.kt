@@ -102,10 +102,42 @@ object GoogleSheetsUtil {
         service.spreadsheets()
             .batchUpdate(employee.boss.spreadSheetId, requests)
             .execute()
+
+        writeHeaderToSpreadSheet(employee)
+    }
+
+    private fun writeHeaderToSpreadSheet(employee: Employee) {
+        val range = "${employee.name}!A1"
+        val values: List<List<String>> = listOf(
+            listOf(
+                "ID",
+                "Check In",
+                "Check In Remarks",
+                "Check Out",
+                "Check Out Remarks",
+                "Total Hours"
+            ) // Cell values
+        )// Rows
+        val data: MutableList<ValueRange> = ArrayList()
+        data.add(
+            ValueRange()
+                .setRange(range)
+                .setValues(values)
+        )
+        val body = ValueRange()
+            .setValues(values)
+
+        val result = service.spreadsheets()
+            .values()
+            .append(employee.boss.spreadSheetId, range, body)
+            .setValueInputOption("raw")
+            .execute()
+
+
     }
 
     fun writeMonthToSpreadSheet(attendance: Attendance, date: String) {
-        val range = "${attendance.employee.name}!A1"
+        val range = "${attendance.employee.name}!A2"
         val values: List<List<String>> = listOf(
             listOf(date.getMonthAndYear()) // Cell values
         )// Rows
@@ -129,7 +161,7 @@ object GoogleSheetsUtil {
 
     fun writeAttendanceToSpreadSheet(attendance: Attendance):Boolean {
         val spreadSheetId = attendance.employee.boss.spreadSheetId
-        val range = "${attendance.employee.name}!A2"
+        val range = "${attendance.employee.name}!A3"
         println("CHECK IN SpreadSheet -> ${attendance.checkIn.toString()}")
         println("CHECK IN beautified SpreadSheet -> ${attendance.checkIn.toString().beautifyDateWithTimeZone()}")
         val values: List<List<String>> = listOf(
