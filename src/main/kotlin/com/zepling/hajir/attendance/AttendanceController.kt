@@ -39,6 +39,7 @@ class AttendanceController {
                 ResponseEntity(attendanceResponse.t, HttpStatus.OK)
             }
             is Response.Error->{
+                println("NOT FOUND IN CONTROLLER")
                 ResponseEntity(Attendance(), HttpStatus.NOT_FOUND)
             }
 

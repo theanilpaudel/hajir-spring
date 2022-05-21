@@ -23,7 +23,14 @@ class AttendanceService {
     lateinit var bossRepo: BossRepo
 
     fun createAttendance(principal: Principal, employeeId: String, remarks: String): Attendance? {
-        val employee = employeeRepo.findById(employeeId).get()
+        val boss = bossRepo.findById(principal.name).get()
+        val employeeOpt = employeeRepo.findByBossIdAndId(boss.id.toString(),employeeId)
+        if(!employeeOpt.isPresent){
+            return null
+        }
+        val employee = employeeOpt.get()
+
+
         val lastAttendanceOpt = employee.id?.let { attendanceRepo.findFirstByEmployee_Id_OrderByCheckInDesc(it) }
 
         var attendance: Attendance?
@@ -46,8 +53,8 @@ class AttendanceService {
             attendance = checkIn(employee, remarks)
         }
 
-
-        attendance?.let { writeMonthInSpreadSheet(principal, it) }
+        removeOlderAttendance()
+//        attendance?.let { writeMonthInSpreadSheet(principal, it) }
         attendance?.let { writeAttendanceToSpreadSheet(it) }
         return attendance
     }
@@ -68,9 +75,32 @@ class AttendanceService {
         attendanceRepo.save(it)
     }
 
+    fun removeOlderAttendance(){
+        val now = OffsetDateTime.now(ZoneId.of("UTC")).plusDays(10)
+        val allAttendancesOpt = attendanceRepo.findAllByCheckOutIsAfter(now)
+        if(allAttendancesOpt.isPresent){
+            val allAttendance = allAttendancesOpt.get()
+//            println("removing all attendaces ${allAttendance[0].checkOut}")
+            val ids = allAttendance.map {
+//                it.checkOut?.isAfter(now)
+                it.id
+            }
+            ids.forEach {
+                println("OLDER IDS $it")
+            }
+//            attendanceRepo.deleteAllById(ids)
+        }
+    }
+
 
     fun getLatestAttendance(principal: Principal, employeeId: String): Response<Attendance> {
-        val employee = employeeRepo.findById(employeeId).get()
+        val boss = bossRepo.findById(principal.name).get()
+        val employeeOpt = employeeRepo.findByBossIdAndId(boss.id.toString(),employeeId)
+        if(!employeeOpt.isPresent){
+            println("NOT FOUND IN SERVICE")
+            return Response.Error("Not found")
+        }
+        val employee = employeeOpt.get()
         val lastAttendanceOpt = employee.id?.let { attendanceRepo.findFirstByEmployee_Id_OrderByCheckInDesc(it) }
         return if (lastAttendanceOpt?.isPresent == true) {
             lastAttendanceOpt.get().apply {
@@ -89,7 +119,13 @@ class AttendanceService {
     }
 
     fun getAllAttendanceOfAnEmployee(principal: Principal, employeeId: String): Response<List<Attendance>> {
-        val employee = employeeRepo.findById(employeeId).get()
+        val boss = bossRepo.findById(principal.name).get()
+        val employeeOpt = employeeRepo.findByBossIdAndId(boss.id.toString(),employeeId)
+        if(!employeeOpt.isPresent){
+            println("NOT FOUND IN SERVICE")
+            return Response.Error("Not found")
+        }
+        val employee = employeeOpt.get()
         val listOpt = employee.id?.let { attendanceRepo.findAllByEmployee_Id_OrderByCheckInDesc(it) }
         return if (listOpt?.isPresent == true) {
 

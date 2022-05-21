@@ -5,4 +5,5 @@ import java.util.Optional
 
 interface EmployeeRepo : JpaRepository<Employee,String> {
     fun findAllByBossId(bossId:String):Optional<List<Employee>>
+    fun findByBossIdAndId(bossId: String,employeeId:String):Optional<Employee>
 }
