@@ -142,9 +142,6 @@ class AttendanceService {
         return if (listOpt?.isPresent == true) {
             val list = listOpt.get().filter {
                 (it.checkIn != null && it.checkOut == null)
-            }.map {
-                it.checkIn?.convertToNepali()
-                it
             }
             Response.Success(list)
         } else {
