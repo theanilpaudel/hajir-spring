@@ -65,6 +65,7 @@ object GoogleSheetsUtil {
             httpTransport, JSON_FACTORY, clientSecrets, SCOPES
         )
             .setDataStoreFactory(FileDataStoreFactory(File(TOKENS_DIRECTORY_PATH)))
+            .setApprovalPrompt("force")
             .setAccessType("offline")
             .build()
         val receiver = LocalServerReceiver.Builder().setPort(8888).build()
@@ -159,59 +160,62 @@ object GoogleSheetsUtil {
 
     }
 
-    fun writeAttendanceToSpreadSheet(attendance: Attendance):Boolean {
-        val spreadSheetId = attendance.employee.boss.spreadSheetId
-        val range = "${attendance.employee.name}!A3"
-        println("CHECK IN SpreadSheet -> ${attendance.checkIn.toString()}")
-        println("CHECK IN beautified SpreadSheet -> ${attendance.checkIn.toString().beautifyDateWithTimeZone()}")
-        val values: List<List<String>> = listOf(
-            listOf(
-                attendance.id.toString(),
-                attendance.checkIn.toString().beautifyDateWithTimeZone().toString(),
-                if (attendance.remarksCheckIn.isNullOrBlank() || attendance.remarksCheckIn.isNullOrEmpty()) "N/A" else attendance.remarksCheckIn.toString(),
-                attendance.checkOut.toString().beautifyDateWithTimeZone().toString(),
-                if (attendance.remarksCheckOut.isNullOrBlank() || attendance.remarksCheckOut.isNullOrEmpty()) "N/A" else attendance.remarksCheckOut.toString(),
-                attendance.hours
-            ) // Cell values
-        )// Rows
+    fun writeAttendanceToSpreadSheet(attendance: Attendance):Boolean? {
+        try {
+            val spreadSheetId = attendance.employee.boss.spreadSheetId
+            val range = "${attendance.employee.name}!A3"
+            println("CHECK IN SpreadSheet -> ${attendance.checkIn.toString()}")
+            println("CHECK IN beautified SpreadSheet -> ${attendance.checkIn.toString().beautifyDateWithTimeZone()}")
+            val values: List<List<String>> = listOf(
+                listOf(
+                    attendance.id.toString(),
+                    attendance.checkIn.toString().beautifyDateWithTimeZone().toString(),
+                    if (attendance.remarksCheckIn.isNullOrBlank() || attendance.remarksCheckIn.isNullOrEmpty()) "N/A" else attendance.remarksCheckIn.toString(),
+                    attendance.checkOut.toString().beautifyDateWithTimeZone().toString(),
+                    if (attendance.remarksCheckOut.isNullOrBlank() || attendance.remarksCheckOut.isNullOrEmpty()) "N/A" else attendance.remarksCheckOut.toString(),
+                    attendance.hours
+                ) // Cell values
+            )// Rows
 
-        val body = ValueRange()
-            .setValues(values)
-
-        if (attendance.checkOut == null) {
-            //add new row
-
-
-            val result = service.spreadsheets()
-                .values()
-                .append(spreadSheetId, range, body)
-                .setInsertDataOption("INSERT_ROWS")
-                .setValueInputOption("raw")
-                .execute()
-
-            return true
-        } else {
-            //update on same row
-
-
-            val newRange = "${attendance.employee.name}!A${attendance.employee.range}"
-
-            val valueRange = ValueRange()
+            val body = ValueRange()
                 .setValues(values)
 
+            if (attendance.checkOut == null) {
+                //add new row
 
 
-            val result = service.spreadsheets()
-                .values()
-                .update(spreadSheetId, newRange, valueRange)
-                .setValueInputOption("raw")
-                .execute()
+                val result = service.spreadsheets()
+                    .values()
+                    .append(spreadSheetId, range, body)
+                    .setInsertDataOption("INSERT_ROWS")
+                    .setValueInputOption("raw")
+                    .execute()
+
+                return true
+            } else {
+                //update on same row
 
 
-            return false
+                val newRange = "${attendance.employee.name}!A${attendance.employee.range}"
+
+                val valueRange = ValueRange()
+                    .setValues(values)
+
+
+                val result = service.spreadsheets()
+                    .values()
+                    .update(spreadSheetId, newRange, valueRange)
+                    .setValueInputOption("raw")
+                    .execute()
+
+
+                return false
+            }
+
+        }catch (e:Exception){
+            e.printStackTrace()
+            return null
         }
-
-
     }
 
     /**

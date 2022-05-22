@@ -186,7 +186,9 @@ class AttendanceService {
 
     fun writeAttendanceToSpreadSheet(attendance: Attendance){
         val isAdded = GoogleSheetsUtil.writeAttendanceToSpreadSheet(attendance)
-        if(isAdded){
+        if(isAdded == null){
+
+        }else if(isAdded){
             attendance.employee.range = attendance.employee.range?.plus(1)
             employeeRepo.save(attendance.employee)
         }
