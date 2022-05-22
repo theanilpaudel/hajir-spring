@@ -35,7 +35,7 @@ class BossController {
 
     }
 
-    @PostMapping("/createSpreadSheet")
+    /*@PostMapping("/createSpreadSheet")
     fun createSpreadSheet(principal: Principal): ResponseEntity<String> {
 
         return when (bossService.createSpreadSheet(principal)) {
@@ -48,5 +48,5 @@ class BossController {
         }
 
 
-    }
+    }*/
 }

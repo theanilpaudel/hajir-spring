@@ -10,6 +10,7 @@ import java.security.Principal
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 @Service
 class AttendanceService {
@@ -60,7 +61,7 @@ class AttendanceService {
     }
 
     fun checkIn(employee: Employee, remarks: String): Attendance = Attendance().apply {
-        this.checkIn = OffsetDateTime.now(ZoneId.of(Keys.ZONE_ID))
+        this.checkIn = OffsetDateTime.now(ZoneOffset.of(Keys.ZONE_OFFSET))
         this.remarksCheckIn = remarks
         this.employee = employee
     }.also {
@@ -69,7 +70,7 @@ class AttendanceService {
 
     fun checkOut(attendance: Attendance, remarks: String): Attendance = attendance.apply {
         this.checkIn = attendance.checkIn
-        this.checkOut = OffsetDateTime.now(ZoneId.of(Keys.ZONE_ID))
+        this.checkOut = OffsetDateTime.now(ZoneId.of(Keys.ZONE_OFFSET))
         this.remarksCheckOut = remarks
     }.also {
         attendanceRepo.save(it)

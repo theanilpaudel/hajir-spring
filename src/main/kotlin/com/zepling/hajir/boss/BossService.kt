@@ -27,6 +27,7 @@ class BossService {
             return if (userRecord.tenantId.isNullOrBlank() || userRecord.tenantId.isNullOrEmpty()){
                 id = userRecord.uid
                 bossRepo.save(boss)
+                createSpreadSheet(boss)
                 Response.Success(boss)
             }else{
                 Response.Error("Failed")
@@ -35,8 +36,7 @@ class BossService {
 
     }
 
-    fun createSpreadSheet(principal: Principal):Response<String>{
-        val boss = bossRepo.findById(principal.name).get()
+    fun createSpreadSheet(boss: Boss):Response<String>{
         with(boss){
             val spreadSheetId = GoogleSheetsUtil.createSpreadSheet(boss)
 
