@@ -67,7 +67,7 @@ fun String.beautifyDateWithTimeZone():String?{
         val odt = ZonedDateTime.parse(this, dateParse).withZoneSameInstant(ZoneId.of(Keys.ZONE_ID))
 
         val newOdt = OffsetDateTime.of(odt.toLocalDateTime(), ZoneOffset.of("+05:45"))
-        val dateTimeFormat = DateTimeFormatter.ofPattern("MMM, yyyy, HH:mm:ss", Locale.ENGLISH)
+        val dateTimeFormat = DateTimeFormatter.ofPattern("MMM d, yyyy, HH:mm:ss", Locale.ENGLISH)
 
         val d = OffsetDateTime.of(newOdt.toLocalDateTime(),ZoneOffset.of("+05:45")).atZoneSameInstant(ZoneId.of(Keys.ZONE_ID)).format(dateTimeFormat)
 
