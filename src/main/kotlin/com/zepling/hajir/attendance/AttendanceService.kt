@@ -89,7 +89,7 @@ class AttendanceService {
             ids.forEach {
                 println("OLDER IDS $it")
             }
-//            attendanceRepo.deleteAllById(ids)
+            attendanceRepo.deleteAllById(ids)
         }
     }
 

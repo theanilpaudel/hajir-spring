@@ -8,9 +8,9 @@ class AttendanceCron {
     @Autowired
     lateinit var attendanceService: AttendanceService
 
-    //every day from Sun to Thu at 16:05 only once
-    @Scheduled(cron = "0 20 15 * * *", zone = "Asia/Kathmandu")
+    //every day from Sun to Thu at 22:15 only once
+    @Scheduled(cron = "0 17 35 * * *", zone = "Asia/Kathmandu")
     private fun cronRemoval() {
-//        attendanceService.removeOlderAttendance()
+        attendanceService.removeOlderAttendance()
     }
 }
