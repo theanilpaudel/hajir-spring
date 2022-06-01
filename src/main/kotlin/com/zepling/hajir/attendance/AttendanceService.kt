@@ -23,6 +23,9 @@ class AttendanceService {
     @Autowired
     lateinit var bossRepo: BossRepo
 
+    @Autowired
+    lateinit var googleSheetsUtil: GoogleSheetsUtil
+
     fun createAttendance(principal: Principal, employeeId: String, remarks: String): Attendance? {
         val boss = bossRepo.findById(principal.name).get()
         val employeeOpt = employeeRepo.findByBossIdAndId(boss.id.toString(),employeeId)
@@ -162,19 +165,19 @@ class AttendanceService {
                 val offSetOld = latestAttendance.checkOut.toString().getMonthAndYearOffset()
                 val offSetNow = OffsetDateTime.now(ZoneId.of(Keys.ZONE_ID))
                 if (offSetNow.month != offSetOld.month) {
-                    GoogleSheetsUtil.writeMonthToSpreadSheet(attendance, attendance.checkOut.toString())
+                    googleSheetsUtil.writeMonthToSpreadSheet(attendance, attendance.checkOut.toString())
                 }
             } else {
                 //calculate from checkin
                 val offSetOld = latestAttendance.checkIn.toString().getMonthAndYearOffset()
                 val offSetNow = OffsetDateTime.now(ZoneId.of(Keys.ZONE_ID))
                 if (offSetNow.month != offSetOld.month) {
-                    GoogleSheetsUtil.writeMonthToSpreadSheet(attendance, attendance.checkIn.toString())
+                    googleSheetsUtil.writeMonthToSpreadSheet(attendance, attendance.checkIn.toString())
                 }
             }
         } else {
             //first time
-            GoogleSheetsUtil.writeMonthToSpreadSheet(attendance,attendance.checkIn.toString())
+            googleSheetsUtil.writeMonthToSpreadSheet(attendance,attendance.checkIn.toString())
         }
 
         attendance.employee.apply {
@@ -185,7 +188,7 @@ class AttendanceService {
     }
 
     fun writeAttendanceToSpreadSheet(attendance: Attendance){
-        val isAdded = GoogleSheetsUtil.writeAttendanceToSpreadSheet(attendance)
+        val isAdded = googleSheetsUtil.writeAttendanceToSpreadSheet(attendance)
         if(isAdded == null){
 
         }else if(isAdded){

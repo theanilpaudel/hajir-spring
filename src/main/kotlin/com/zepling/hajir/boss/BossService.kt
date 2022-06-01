@@ -12,7 +12,8 @@ import java.security.Principal
 class BossService {
     @Autowired
     lateinit var bossRepo: BossRepo
-
+    @Autowired
+    lateinit var googleSheetsUtil: GoogleSheetsUtil
     fun createBoss(boss:Boss):Response<Boss>{
         with(boss){
             val request = UserRecord.CreateRequest()
@@ -38,7 +39,7 @@ class BossService {
 
     fun createSpreadSheet(boss: Boss):Response<String>{
         with(boss){
-            val spreadSheetId = GoogleSheetsUtil.createSpreadSheet(boss)
+            val spreadSheetId = googleSheetsUtil.createSpreadSheet(boss)
 
             return if (spreadSheetId.isNotEmpty()){
                 boss.spreadSheetId = spreadSheetId

@@ -1,92 +1,21 @@
 package com.zepling.hajir.utils
 
-import com.google.api.client.auth.oauth2.Credential
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
-import com.google.api.client.json.JsonFactory
-import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.sheets.v4.Sheets
-import com.google.api.services.sheets.v4.SheetsScopes
 import com.google.api.services.sheets.v4.model.*
-import com.google.auth.http.HttpCredentialsAdapter
-import com.google.auth.oauth2.GoogleCredentials
-import com.google.common.collect.Lists
 import com.zepling.hajir.attendance.Attendance
 import com.zepling.hajir.boss.Boss
 import com.zepling.hajir.employee.Employee
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.Resource
-import org.springframework.core.io.ResourceLoader
-import java.io.*
-import java.util.*
+import org.springframework.stereotype.Service
 
-
-object GoogleSheetsUtil {
-    private val APPLICATION_NAME = "Cloud9"
-    private val JSON_FACTORY: JsonFactory = GsonFactory.getDefaultInstance()
-    private val TOKENS_DIRECTORY_PATH = "tokens"
+@Service
+class GoogleSheetsUtil {
     @Autowired
-    lateinit var resourceLoader: ResourceLoader
-    /**
-     * Global instance of the scopes required by this quickstart.
-     * If modifying these scopes, delete your previously saved tokens/ folder.
-     */
-    private val SCOPES = listOf(
-        SheetsScopes.SPREADSHEETS,
-        SheetsScopes.DRIVE,
-        SheetsScopes.DRIVE_FILE,
-    )
-    private val CREDENTIALS_FILE_PATH =
-        "/client_secret_569046147684-mi7cilm08635aum55kdf60isj1lotlb1.apps.googleusercontent.com.json"
+    lateinit var service: Sheets
 
-    val HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport()
     val spreadsheetId = "***REMOVED***"
     val range = "Class Data!A2:E"
 
-    private val service: Sheets by lazy {
-
-        Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, HttpCredentialsAdapter(getCredentials()))
-            .setApplicationName(APPLICATION_NAME)
-            .build()
-    }
-
-    /**
-     * Creates an authorized Credential object.
-     * @param HTTP_TRANSPORT The network HTTP Transport.
-     * @return An authorized Credential object.
-     * @throws IOException If the credentials.json file cannot be found.
-     */
-    /*@Throws(IOException::class)
-    private fun getCredentials(httpTransport: NetHttpTransport): Credential? {
-        // Load client secrets.
-        val clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, GoogleSheetsUtil::class.java.getResourceAsStream(
-            CREDENTIALS_FILE_PATH
-        )?.let { InputStreamReader(it) })
-
-        // Build flow and trigger user authorization request.
-        val flow = GoogleAuthorizationCodeFlow.Builder(
-            httpTransport, JSON_FACTORY, clientSecrets, SCOPES
-        )
-            .setDataStoreFactory(FileDataStoreFactory(File(TOKENS_DIRECTORY_PATH)))
-            .setApprovalPrompt("force")
-            .setAccessType("offline")
-            .build()
-        val receiver = LocalServerReceiver.Builder().setPort(8888).build()
-        return AuthorizationCodeInstalledApp(flow, receiver).authorize("user")
-    }*/
-
-    private fun getCredentials(): GoogleCredentials {
-        // You can specify a credential file by providing a path to GoogleCredentials.
-        // Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
-        // You can specify a credential file by providing a path to GoogleCredentials.
-        // Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
-        val resource: Resource =
-            resourceLoader.getResource("classpath:hajir-10448-714a576aaeab.json")
-        val credentials: GoogleCredentials = GoogleCredentials.fromStream(resource.inputStream)
-//        val credentials: GoogleCredentials = GoogleCredentials.fromStream(FileInputStream("/Users/anilpaudel/SpringProjects/hajir/src/main/resources/hajir-10448-714a576aaeab.json"))
-            .createScoped(SCOPES)
-
-        return credentials
-    }
 
     fun createSpreadSheet(boss: Boss): String {
         var spreadsheet = Spreadsheet()
@@ -176,7 +105,7 @@ object GoogleSheetsUtil {
 
     }
 
-    fun writeAttendanceToSpreadSheet(attendance: Attendance):Boolean? {
+    fun writeAttendanceToSpreadSheet(attendance: Attendance): Boolean? {
         try {
             val spreadSheetId = attendance.employee.boss.spreadSheetId
             val range = "${attendance.employee.name}!A3"
@@ -228,7 +157,7 @@ object GoogleSheetsUtil {
                 return false
             }
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             return null
         }

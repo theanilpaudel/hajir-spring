@@ -12,7 +12,8 @@ class EmployeeService {
     lateinit var employeeRepo: EmployeeRepo
     @Autowired
     lateinit var employerRepo: BossRepo
-
+    @Autowired
+    lateinit var googleSheetsUtil: GoogleSheetsUtil
     fun createEmployee(principal: Principal, employee: Employee):Employee{
         println("PRINCIPAL ${principal.name}")
         val boss = employerRepo.findById(principal.name).get()
@@ -29,6 +30,6 @@ class EmployeeService {
 
     fun createSheet(employeeId:String){
         val employee = employeeRepo.findById(employeeId).get()
-        GoogleSheetsUtil.createSheet(employee)
+        googleSheetsUtil.createSheet(employee)
     }
 }
