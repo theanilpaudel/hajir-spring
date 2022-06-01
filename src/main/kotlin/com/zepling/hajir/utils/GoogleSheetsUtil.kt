@@ -13,6 +13,9 @@ import com.google.common.collect.Lists
 import com.zepling.hajir.attendance.Attendance
 import com.zepling.hajir.boss.Boss
 import com.zepling.hajir.employee.Employee
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.Resource
+import org.springframework.core.io.ResourceLoader
 import java.io.*
 import java.util.*
 
@@ -21,7 +24,8 @@ object GoogleSheetsUtil {
     private val APPLICATION_NAME = "Cloud9"
     private val JSON_FACTORY: JsonFactory = GsonFactory.getDefaultInstance()
     private val TOKENS_DIRECTORY_PATH = "tokens"
-
+    @Autowired
+    lateinit var resourceLoader: ResourceLoader
     /**
      * Global instance of the scopes required by this quickstart.
      * If modifying these scopes, delete your previously saved tokens/ folder.
@@ -75,7 +79,9 @@ object GoogleSheetsUtil {
         // Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
         // You can specify a credential file by providing a path to GoogleCredentials.
         // Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
-        val credentials: GoogleCredentials = GoogleCredentials.fromStream(FileInputStream("classpath:hajir-10448-714a576aaeab.json"))
+        val resource: Resource =
+            resourceLoader.getResource("classpath:hajir-10448-714a576aaeab.json")
+        val credentials: GoogleCredentials = GoogleCredentials.fromStream(resource.inputStream)
 //        val credentials: GoogleCredentials = GoogleCredentials.fromStream(FileInputStream("/Users/anilpaudel/SpringProjects/hajir/src/main/resources/hajir-10448-714a576aaeab.json"))
             .createScoped(SCOPES)
 
