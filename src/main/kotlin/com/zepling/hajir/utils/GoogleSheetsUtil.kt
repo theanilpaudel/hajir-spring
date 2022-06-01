@@ -1,18 +1,15 @@
 package com.zepling.hajir.utils
 
 import com.google.api.client.auth.oauth2.Credential
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
-import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.gson.GsonFactory
-import com.google.api.client.util.store.FileDataStoreFactory
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.SheetsScopes
 import com.google.api.services.sheets.v4.model.*
+import com.google.auth.http.HttpCredentialsAdapter
+import com.google.auth.oauth2.GoogleCredentials
+import com.google.common.collect.Lists
 import com.zepling.hajir.attendance.Attendance
 import com.zepling.hajir.boss.Boss
 import com.zepling.hajir.employee.Employee
@@ -42,7 +39,8 @@ object GoogleSheetsUtil {
     val range = "Class Data!A2:E"
 
     private val service: Sheets by lazy {
-        Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+
+        Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, HttpCredentialsAdapter(getCredentials()))
             .setApplicationName(APPLICATION_NAME)
             .build()
     }
@@ -53,7 +51,7 @@ object GoogleSheetsUtil {
      * @return An authorized Credential object.
      * @throws IOException If the credentials.json file cannot be found.
      */
-    @Throws(IOException::class)
+    /*@Throws(IOException::class)
     private fun getCredentials(httpTransport: NetHttpTransport): Credential? {
         // Load client secrets.
         val clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, GoogleSheetsUtil::class.java.getResourceAsStream(
@@ -70,6 +68,18 @@ object GoogleSheetsUtil {
             .build()
         val receiver = LocalServerReceiver.Builder().setPort(8888).build()
         return AuthorizationCodeInstalledApp(flow, receiver).authorize("user")
+    }*/
+
+    private fun getCredentials(): GoogleCredentials {
+        // You can specify a credential file by providing a path to GoogleCredentials.
+        // Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
+        // You can specify a credential file by providing a path to GoogleCredentials.
+        // Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
+        val credentials: GoogleCredentials = GoogleCredentials.fromStream(FileInputStream("classpath:hajir-10448-714a576aaeab.json"))
+//        val credentials: GoogleCredentials = GoogleCredentials.fromStream(FileInputStream("/Users/anilpaudel/SpringProjects/hajir/src/main/resources/hajir-10448-714a576aaeab.json"))
+            .createScoped(SCOPES)
+
+        return credentials
     }
 
     fun createSpreadSheet(boss: Boss): String {
