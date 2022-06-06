@@ -1,0 +1,42 @@
+ROSTemplateFormatVersion: '2015-09-01'
+Transform: 'Aliyun::Serverless-2018-04-03'
+Resources:
+  hajir:
+    Type: 'Aliyun::Serverless::Service'
+    Properties:
+      Description: This is FC service
+    hajir:
+      Type: 'Aliyun::Serverless::Function'
+      Properties:
+        Handler: index.handler
+        Runtime: custom
+        CodeUri: >-
+          oss://fun-gen-us-east-1-5938252886577370/0708d158733f50e7e5792b2d0633b000
+        MemorySize: 1024
+        InstanceConcurrency: 5
+        Timeout: 120
+      Events:
+        httpTrigger:
+          Type: HTTP
+          Properties:
+            AuthType: ANONYMOUS
+            Methods:
+              - GET
+              - POST
+              - PUT
+  Domain:
+    Type: 'Aliyun::Serverless::CustomDomain'
+    Properties:
+      DomainName: Auto
+      Protocol: HTTP
+      RouteConfig:
+        Routes:
+          /*:
+            ServiceName:
+              'Fn::GetAtt':
+                - hajir
+                - ServiceName
+            FunctionName:
+              'Fn::GetAtt':
+                - hajirhajir
+                - FunctionName
