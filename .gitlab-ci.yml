@@ -1,10 +1,9 @@
-image: maven:latest
-
 stages:          # List of stages for jobs, and their order of execution
   - build
   - deploy
 
 maven-build-job:       # This job runs in the build stage, which runs first.
+  image: maven:latest
   stage: build
   script:
     - echo "Compiling the code..."
@@ -16,6 +15,7 @@ maven-build-job:       # This job runs in the build stage, which runs first.
 
 
 deploy-job:      # This job runs in the deploy stage.
+  image: docker:latest
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   script:
     - echo "Deploying application..."
