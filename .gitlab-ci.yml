@@ -1,23 +1,23 @@
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - test
   - deploy
 
-build-job:       # This job runs in the build stage, which runs first.
+maven-build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - echo "Compiling the code..."
     - mvn package
-    - FROM openjdk:8
-    - ARG JAR_FILE=target/*.jar
-    - COPY ${JAR_FILE} hajir.jar
-    - ENTRYPOINT ["java","-jar","/hajir.jar"]
-    - echo "Compile complete."
+  artifacts:
+    paths:
+      - target/*.jar
+
 
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   script:
     - echo "Deploying application..."
-    - docker build -t registry.gitlab.com/theanilpaudel/hajir . && docker push registry.gitlab.com/theanilpaudel/hajir
+    - docker build -t registry.gitlab.com/theanilpaudel/hajir . 
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker push registry.gitlab.com/theanilpaudel/hajir
     - echo "Application successfully deployed."
