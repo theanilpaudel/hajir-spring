@@ -11,9 +11,9 @@ maven-build-job:       # This job runs in the build stage, which runs first.
   script:
     - echo "Compiling the code..."
     - mvn package
-  artifacts:
-    paths:
-      - target/*.jar
+  # artifacts:
+  #   paths:
+  #     - target/*.jar
 
 
 
