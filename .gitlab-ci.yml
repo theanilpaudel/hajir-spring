@@ -1,6 +1,6 @@
 variables:
   DOCKER_DRIVER: overlay
-  
+
 stages:          # List of stages for jobs, and their order of execution
   - build
   - deploy
@@ -23,6 +23,8 @@ deploy-job:      # This job runs in the deploy stage.
   script:
     - echo "Deploying application..."
     - docker build -t registry.gitlab.com/theanilpaudel/hajir .
+    - echo "Login to gitlab..."
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - echo "Pushing to gitlab..."
     - docker push registry.gitlab.com/theanilpaudel/hajir
     - echo "Application successfully deployed."
