@@ -11,10 +11,6 @@ class WebSecurity : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity?){
         http?.authorizeRequests()
-            ?.antMatchers("/", "/**")
-            ?.permitAll()
-            ?.and()
-            ?.authorizeRequests()
             ?.anyRequest()
             ?.authenticated()
 
