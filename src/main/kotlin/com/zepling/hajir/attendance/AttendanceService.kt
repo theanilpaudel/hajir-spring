@@ -97,9 +97,9 @@ class AttendanceService {
     }
 
 
-    fun getLatestAttendance(principal: Principal, employeeId: String): Response<Attendance> {
+    fun getLatestAttendance(principal: Principal, employeePhone: String): Response<Attendance> {
         val boss = bossRepo.findById(principal.name).get()
-        val employeeOpt = employeeRepo.findByBossIdAndId(boss.id.toString(),employeeId)
+        val employeeOpt = employeeRepo.findByBossIdAndPhone(boss.id.toString(),employeePhone)
         if(!employeeOpt.isPresent){
             println("NOT FOUND IN SERVICE")
             return Response.Error("Not found")
