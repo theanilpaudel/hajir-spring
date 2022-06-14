@@ -18,8 +18,8 @@ class AttendanceController {
     lateinit var attendanceService: AttendanceService
 
     @PostMapping("/create")
-    fun createAttendance(principal: Principal, employeeId: String, remarks: String): ResponseEntity<Attendance> {
-        val attendance = attendanceService.createAttendance(principal, employeeId, remarks)
+    fun createAttendance(principal: Principal, employeePhone: String, remarks: String): ResponseEntity<Attendance> {
+        val attendance = attendanceService.createAttendance(principal, employeePhone, remarks)
         return if (attendance == null) {
             ResponseEntity(attendance, HttpStatus.FORBIDDEN)
         } else {

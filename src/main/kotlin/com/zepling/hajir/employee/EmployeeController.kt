@@ -1,5 +1,7 @@
 package com.zepling.hajir.employee
 
+import com.zepling.hajir.utils.CustomResponse
+import com.zepling.hajir.utils.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,11 +19,22 @@ class EmployeeController {
     lateinit var employeeService: EmployeeService
 
     @PostMapping("/create")
-    fun createEmployee(principal: Principal,@RequestBody employee: Employee):ResponseEntity<HashMap<String,Employee>>{
-        val employeee = employeeService.createEmployee(principal,employee)
-        val map = HashMap<String,Employee>()
-        map["employee"] = employeee
-        return ResponseEntity(map, HttpStatus.OK)
+    fun createEmployee(principal: Principal,@RequestBody employee: Employee):ResponseEntity<CustomResponse<Employee>>{
+        val employeeeResponse = employeeService.createEmployee(principal,employee)
+        return when(employeeeResponse){
+            is Response.Success ->{
+
+                val customResponse = CustomResponse(HttpStatus.OK.name,employeeeResponse.t)
+
+                ResponseEntity(customResponse, HttpStatus.OK)
+            }
+            is Response.Error ->{
+                val customResponse = CustomResponse(employeeeResponse.message,null)
+                ResponseEntity(customResponse, HttpStatus.FORBIDDEN)
+            }
+        }
+
+
     }
 
     @GetMapping("/getAll")

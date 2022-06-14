@@ -26,9 +26,9 @@ class AttendanceService {
     @Autowired
     lateinit var googleSheetsUtil: GoogleSheetsUtil
 
-    fun createAttendance(principal: Principal, employeeId: String, remarks: String): Attendance? {
+    fun createAttendance(principal: Principal, employeePhone: String, remarks: String): Attendance? {
         val boss = bossRepo.findById(principal.name).get()
-        val employeeOpt = employeeRepo.findByBossIdAndId(boss.id.toString(),employeeId)
+        val employeeOpt = employeeRepo.findByBossIdAndPhone(boss.id.toString(),employeePhone)
         if(!employeeOpt.isPresent){
             return null
         }
