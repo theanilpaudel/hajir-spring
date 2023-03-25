@@ -6,6 +6,7 @@ import com.zepling.hajir.attendance.Attendance
 import com.zepling.hajir.boss.Boss
 import com.zepling.hajir.employee.Employee
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,7 +14,9 @@ class GoogleSheetsUtil {
     @Autowired
     lateinit var service: Sheets
 
-    val spreadsheetId = "1sCQJOS7KxOCFQDi-cZFqt-DKx8vn4i5sAuUDZIQmSbo"
+    @Value ("\${spreadsheet.id}")
+    lateinit var spreadsheetId:String
+
     val range = "Class Data!A2:E"
 
 

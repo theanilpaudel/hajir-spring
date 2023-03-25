@@ -69,7 +69,7 @@ class AttendanceController {
     fun getAllOnGoing(principal: Principal): ResponseEntity<HashMap<String, List<Attendance>>> {
         val attendanceResponse = attendanceService.getAllOngoingAttendance(principal)
         val map = HashMap<String, List<Attendance>>()
-        
+
         return when (attendanceResponse) {
             is Response.Success -> {
 
