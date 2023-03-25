@@ -7,6 +7,7 @@ target/
 !**/src/main/resources/client_secret_569046147684-mi7cilm08635aum55kdf60isj1lotlb1.apps.googleusercontent.com.json
 !**/src/main/resources/hajir-10448-714a576aaeab.json
 cloud.env
+!**/tokens/StoredCredential
 
 ### STS ###
 .apt_generated
