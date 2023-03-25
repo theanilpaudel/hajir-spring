@@ -1,6 +1,5 @@
 package com.zepling.hajir.attendance
 
-import com.zepling.hajir.utils.GoogleSheetsUtil
 import com.zepling.hajir.utils.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -70,6 +69,8 @@ class AttendanceController {
     fun getAllOnGoing(principal: Principal): ResponseEntity<HashMap<String, List<Attendance>>> {
         val attendanceResponse = attendanceService.getAllOngoingAttendance(principal)
         val map = HashMap<String, List<Attendance>>()
+
+
         return when (attendanceResponse) {
             is Response.Success -> {
 
@@ -82,4 +83,6 @@ class AttendanceController {
             }
         }
     }
+
+
 }

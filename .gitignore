@@ -3,6 +3,9 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+!**/src/main/resources/env.properties
+!**/src/main/resources/client_secret_569046147684-mi7cilm08635aum55kdf60isj1lotlb1.apps.googleusercontent.com.json
+!**/src/main/resources/hajir-10448-714a576aaeab.json
 
 ### STS ###
 .apt_generated
