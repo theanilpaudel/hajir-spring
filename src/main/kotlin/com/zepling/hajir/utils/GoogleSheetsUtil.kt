@@ -13,7 +13,7 @@ class GoogleSheetsUtil {
     @Autowired
     lateinit var service: Sheets
 
-    val spreadsheetId = "***REMOVED***"
+    val spreadsheetId = "1sCQJOS7KxOCFQDi-cZFqt-DKx8vn4i5sAuUDZIQmSbo"
     val range = "Class Data!A2:E"
 
 
