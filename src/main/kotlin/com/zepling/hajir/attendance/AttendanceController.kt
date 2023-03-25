@@ -29,8 +29,6 @@ class AttendanceController {
     @GetMapping("/getLatest")
     fun getLatestAttendance(principal: Principal, employeePhone: String): ResponseEntity<Attendance> {
 
-//        GoogleAuthorizeUtil.printValues()
-//        GoogleAuthorizeUtil.createSpreadSheet()
 
         return when (val attendanceResponse = attendanceService.getLatestAttendance(principal, employeePhone)) {
             is Response.Success->{
